@@ -24,7 +24,10 @@ func main() {
 	// Init Shopify App
 	utils.InitShopifyApp()
 
+	//Init Echo
 	e := echo.New()
+
+	// Redirect to auth if query params exists
 	e.GET("/", func(c echo.Context) error {
 		hmac := c.QueryParam("hmac")
 		host := c.QueryParam("shop")
