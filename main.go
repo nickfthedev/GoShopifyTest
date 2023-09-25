@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/nickfthedev/goshopifytest/src/handler"
+	"github.com/nickfthedev/goshopifytest/src/middleware"
+	"github.com/nickfthedev/goshopifytest/src/model"
 	"github.com/nickfthedev/goshopifytest/src/utils"
 	"github.com/nickfthedev/goshopifytest/src/utils/db"
 )
@@ -19,7 +21,7 @@ func main() {
 
 	// Connect Database
 	db.ConnectDB()
-	db.DB.AutoMigrate()
+	db.DB.AutoMigrate(&model.Shop{})
 
 	// Init Shopify App
 	utils.InitShopifyApp()
@@ -27,21 +29,15 @@ func main() {
 	//Init Echo
 	e := echo.New()
 
+	e.Use(middleware.CheckAuth)
+
 	// Redirect to auth if query params exists
 	e.GET("/", func(c echo.Context) error {
-		hmac := c.QueryParam("hmac")
-		host := c.QueryParam("shop")
-		shop := c.QueryParam("shop")
-		timestamp := c.QueryParam("timestamp")
-		if shop != "" && hmac != "" && host != "" && timestamp != "" {
-			url := fmt.Sprintf("api/auth?hmac=%s&host=%s&shop=%s&timestamp=%s", hmac, host, shop, timestamp)
-			return c.Redirect(301, url)
-		}
 
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.GET("/api/auth", handler.MyHandler)
+	e.GET("/api/auth/tokens", handler.MyHandler)
 	e.GET("/api/auth/callback", handler.MyCallbackHandler)
 
 	// Start Server on 1323
