@@ -1,0 +1,31 @@
+{
+    "name": "shopify-go-test",
+    "version": "0.0.1",
+    "type": "module",
+    "author": {
+      "name": "Nick Friedrich",
+      "url": "https://github.com/nickfthedev/"
+    },
+    "scripts": {
+
+      "update:env": "node _developer/updateEnv.js",
+      "update:url": "node _developer/updateDashboard.js"
+
+    },
+    "dependencies": {
+      "@shopify/shopify-api": "^7.4.0"
+    },
+    "devDependencies": {
+      "@shopify/app": "^3.46.5",
+      "@shopify/cli": "^3.46.5",
+      "@shopify/cli-kit": "^3.46.5",
+      "dotenv": "^16.3.1",
+      "ngrok": "^4.3.3",
+      "npm-check-updates": "^16.10.13",
+      "prettier": "^2.8.7",
+      "prisma": "^4.16.1",
+      "axios": "^1.4.0"
+
+    }
+  }
+  
