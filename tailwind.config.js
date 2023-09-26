@@ -9,10 +9,11 @@ export default {
     themes: [
       {
         shopify: {
-          "primary": "#006e52",
-          "secondary": "#2a2a2a",
+          "primary": "#008663",
+          "primary-focus": "#006d51",
+          "secondary": "#1a1a1a",
           "accent": "#d9f99d",
-          "neutral": "#fff",
+          "neutral": "#2a2a2a",
           "base-100": "#fff",
           "info": "#bae6fd",
           "success": "#d9f99d",

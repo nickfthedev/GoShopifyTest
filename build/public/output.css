@@ -445,18 +445,17 @@ html {
 }
 
 :root {
-  --p: 165 100% 22%;
-  --pf: 165 100% 15%;
-  --sf: 0 0% 9%;
+  --p: 164 100% 26%;
+  --sf: 0 0% 3%;
   --af: 81 88% 73%;
-  --nf: 0 0% 93%;
+  --nf: 0 0% 9%;
   --b2: 0 0% 93%;
   --b3: 0 0% 86%;
   --bc: 146 0% 19%;
-  --pc: 154 22% 85%;
-  --sc: 145 0% 81%;
+  --pc: 153 28% 87%;
+  --sc: 145 0% 80%;
   --ac: 80 17% 16%;
-  --nc: 146 0% 19%;
+  --nc: 145 0% 81%;
   --inc: 201 11% 17%;
   --suc: 80 17% 16%;
   --wac: 51 22% 16%;
@@ -471,9 +470,10 @@ html {
   --border-btn: 1px;
   --tab-border: 1px;
   --tab-radius: 0.5rem;
-  --s: 0 0% 16%;
+  --pf: 165 100% 21%;
+  --s: 0 0% 10%;
   --a: 81 88% 80%;
-  --n: 0 0% 100%;
+  --n: 0 0% 16%;
   --b1: 0 0% 100%;
   --in: 201 94% 86%;
   --su: 81 88% 80%;
@@ -522,18 +522,17 @@ html {
 }
 
 [data-theme=shopify] {
-  --p: 165 100% 22%;
-  --pf: 165 100% 15%;
-  --sf: 0 0% 9%;
+  --p: 164 100% 26%;
+  --sf: 0 0% 3%;
   --af: 81 88% 73%;
-  --nf: 0 0% 93%;
+  --nf: 0 0% 9%;
   --b2: 0 0% 93%;
   --b3: 0 0% 86%;
   --bc: 146 0% 19%;
-  --pc: 154 22% 85%;
-  --sc: 145 0% 81%;
+  --pc: 153 28% 87%;
+  --sc: 145 0% 80%;
   --ac: 80 17% 16%;
-  --nc: 146 0% 19%;
+  --nc: 145 0% 81%;
   --inc: 201 11% 17%;
   --suc: 80 17% 16%;
   --wac: 51 22% 16%;
@@ -548,9 +547,10 @@ html {
   --border-btn: 1px;
   --tab-border: 1px;
   --tab-radius: 0.5rem;
-  --s: 0 0% 16%;
+  --pf: 165 100% 21%;
+  --s: 0 0% 10%;
   --a: 81 88% 80%;
-  --n: 0 0% 100%;
+  --n: 0 0% 16%;
   --b1: 0 0% 100%;
   --in: 201 94% 86%;
   --su: 81 88% 80%;
@@ -2915,6 +2915,16 @@ html {
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
 }
 
+.bg-base-300 {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b3) / var(--tw-bg-opacity));
+}
+
+.bg-secondary {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--s) / var(--tw-bg-opacity));
+}
+
 .bg-base-200 {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--b2) / var(--tw-bg-opacity));
@@ -2945,6 +2955,16 @@ html {
   text-transform: none;
 }
 
+.text-base-content {
+  --tw-text-opacity: 1;
+  color: hsl(var(--bc) / var(--tw-text-opacity));
+}
+
+.text-secondary-content {
+  --tw-text-opacity: 1;
+  color: hsl(var(--sc) / var(--tw-text-opacity));
+}
+
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2953,6 +2973,12 @@ html {
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
