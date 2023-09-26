@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	goshopify "github.com/bold-commerce/go-shopify/v3"
@@ -68,7 +67,7 @@ func MyCallbackHandler(c echo.Context) error {
 	cookie.Value = encryptedtoken
 	cookie.Expires = time.Now().Add(24 * time.Hour)
 	cookie.SameSite = http.SameSiteDefaultMode
-	cookie.Domain = os.Getenv("SHOPIFY_APP_URL")
+	//cookie.Domain = os.Getenv("SHOPIFY_APP_URL")
 	c.SetCookie(cookie)
 
 	// Save Session token to DB (encrypted)
