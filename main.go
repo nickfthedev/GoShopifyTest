@@ -32,18 +32,21 @@ func main() {
 
 	//Init Echo
 	e := echo.New()
-
 	e.Use(middleware.CheckOAuthBegin)
-	e.Use(middleware.CheckValidAuth)
+
+	auth := e.Group("/api/auth")
+	app := e.Group("")
+
+	app.Use(middleware.CheckValidAuth)
 
 	// Redirect to auth if query params exists
-	e.GET("/", func(c echo.Context) error {
+	app.GET("/", func(c echo.Context) error {
 
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.GET("/api/auth/tokens", handler.MyHandler)
-	e.GET("/api/auth/callback", handler.MyCallbackHandler)
+	auth.GET("/tokens", handler.MyHandler)
+	auth.GET("/callback", handler.MyCallbackHandler)
 
 	// Start Server on 1323
 	serverAddress := fmt.Sprintf("127.0.0.1:%s", os.Getenv("APP_PORT"))

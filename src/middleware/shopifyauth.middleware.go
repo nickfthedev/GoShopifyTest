@@ -34,7 +34,7 @@ func CheckValidAuth(next echo.HandlerFunc) echo.HandlerFunc {
 			return c.String(http.StatusForbidden, "Invalid Cookie!")
 		}
 		session := new(model.Session)
-		db.DB.Where("access_token = ?", cookie).First(&session)
+		db.DB.Where("access_token = ?", cookie.Value).First(&session)
 		if session.ID == 0 {
 			return c.String(http.StatusForbidden, "Session not found!")
 		}

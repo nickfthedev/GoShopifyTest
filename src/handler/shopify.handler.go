@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	goshopify "github.com/bold-commerce/go-shopify/v3"
@@ -38,7 +39,7 @@ func MyCallbackHandler(c echo.Context) error {
 	// Create a new API client
 	client := goshopify.NewClient(utils.ShopifyApp, shopName, token)
 	shop, _ := client.Shop.Get(nil)
-	fmt.Printf("%+v \n \n MyShopifyDomain: %s \n", shop, shop.MyshopifyDomain)
+	//fmt.Printf("%+v \n \n MyShopifyDomain: %s \n", shop, shop.MyshopifyDomain)
 
 	shopdb := new(model.Shop)
 	db.DB.Where("myshopify_domain = ?", shop.MyshopifyDomain).First(&shopdb)
@@ -62,9 +63,12 @@ func MyCallbackHandler(c echo.Context) error {
 	// Create Cookie for Session
 	cookie := new(http.Cookie)
 	cookie.Name = "token"
+	cookie.Path = "/"
+	cookie.HttpOnly = true
 	cookie.Value = encryptedtoken
 	cookie.Expires = time.Now().Add(24 * time.Hour)
 	cookie.SameSite = http.SameSiteDefaultMode
+	cookie.Domain = os.Getenv("SHOPIFY_APP_URL")
 	c.SetCookie(cookie)
 
 	// Save Session token to DB (encrypted)
@@ -77,6 +81,7 @@ func MyCallbackHandler(c echo.Context) error {
 	session.IP = c.RealIP()
 	db.DB.Save(&session)
 
-	return c.String(http.StatusOK, "OK")
+	fmt.Println("OAuth completeted. Redirecting...")
+	return c.Redirect(301, "/")
 
 }
