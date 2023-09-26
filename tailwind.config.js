@@ -9,11 +9,15 @@ export default {
     themes: [
       {
         shopify: {
-          "primary": "#a991f7",
-          "secondary": "#f6d860",
-          "accent": "#37cdbe",
-          "neutral": "#3d4451",
-          "base-100": "#ffffff",
+          "primary": "#006e52",
+          "secondary": "#2a2a2a",
+          "accent": "#d9f99d",
+          "neutral": "#fff",
+          "base-100": "#fff",
+          "info": "#bae6fd",
+          "success": "#d9f99d",
+          "warning": "#fef08a",        
+          "error": "#f43f5e",
         },
       },
       "dark",
@@ -49,5 +53,4 @@ export default {
       "winter",
     ],
   },
-}
-
+};
