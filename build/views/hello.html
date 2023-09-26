@@ -4,9 +4,13 @@
 {{define "title"}}{{ .data2.Val2 }}Hello World{{end}}
 
 {{define "content"}}
-<div>Hello {{.world}}</div>
-<a href="#" class="btn btn-primary">Primary</a>
-<a href="#" class="btn btn-secondary">Primary</a>
-<a href="#" class="btn">Primary</a>
+<h2 class="text-xl font-semibold tracking-tight mb-2">Heading</h2>
+<div class="shadow-lg rounded-xl bg-base-100 p-5">
+    <div>Hello {{.world}}</div>
+    <a href="#" class="btn btn-primary">Primary</a>
+    <a href="#" class="btn btn-secondary">Primary</a>
+    <a href="#" class="btn">Primary</a>
+</div>
+
 
 {{end}}
