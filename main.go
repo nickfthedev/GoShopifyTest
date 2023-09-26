@@ -23,6 +23,9 @@ func main() {
 		log.Fatalln("No app secret is set. Set up your .env file")
 	}
 
+	// Templates
+	t := utils.InitTemplate([]string{"./views", "./build/views"})
+
 	// Connect Database
 	db.ConnectDB()
 	db.DB.AutoMigrate(&model.Shop{}, &model.Session{})
@@ -32,24 +35,49 @@ func main() {
 
 	//Init Echo
 	e := echo.New()
+
+	e.Static("/", "public")
+	e.Static("/", "build/public")
+
+	e.Renderer = t
 	e.Use(middleware.CheckOAuthBegin)
 
 	auth := e.Group("/api/auth")
-	app := e.Group("")
-
-	app.Use(middleware.CheckValidAuth)
-
-	// Redirect to auth if query params exists
-	app.GET("/", func(c echo.Context) error {
-
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-
 	auth.GET("/tokens", handler.MyHandler)
 	auth.GET("/callback", handler.MyCallbackHandler)
+
+	app := e.Group("")
+	app.Use(middleware.CheckValidAuth)
+	app.GET("/", Hello)
+	// Template Test
+	app.GET("/hello", Hello)
+
+	// Redirect to auth if query params exists
+	// app.GET("/", func(c echo.Context) error {
+	// 	return c.String(http.StatusOK, "Hello, World!")
+	// })
 
 	// Start Server on 1323
 	serverAddress := fmt.Sprintf("127.0.0.1:%s", os.Getenv("APP_PORT"))
 	e.Logger.Fatal(e.Start(serverAddress))
 
+}
+
+func Hello(c echo.Context) error {
+	type myStruct1 struct {
+		Val1 string
+	}
+
+	type myStruct2 struct {
+		Val2 int
+	}
+
+	data1 := myStruct1{"Hello"}
+	data2 := myStruct2{42}
+
+	return c.Render(http.StatusOK, "hello.html", map[string]interface{}{
+		"data1": data1,
+		"data2": data2,
+		"world": "Hello!",
+	})
 }
