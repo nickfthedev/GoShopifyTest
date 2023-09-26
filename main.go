@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -18,10 +19,13 @@ func main() {
 
 	// Load .env
 	godotenv.Load(".env")
+	if os.Getenv("APP_SECRET") == "" {
+		log.Fatalln("No app secret is set. Set up your .env file")
+	}
 
 	// Connect Database
 	db.ConnectDB()
-	db.DB.AutoMigrate(&model.Shop{})
+	db.DB.AutoMigrate(&model.Shop{}, &model.Session{})
 
 	// Init Shopify App
 	utils.InitShopifyApp()
@@ -29,7 +33,8 @@ func main() {
 	//Init Echo
 	e := echo.New()
 
-	e.Use(middleware.CheckAuth)
+	e.Use(middleware.CheckOAuthBegin)
+	e.Use(middleware.CheckValidAuth)
 
 	// Redirect to auth if query params exists
 	e.GET("/", func(c echo.Context) error {
