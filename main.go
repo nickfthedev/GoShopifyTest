@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -48,9 +47,9 @@ func main() {
 
 	app := e.Group("")
 	app.Use(middleware.CheckValidAuth)
-	app.GET("/", Hello)
+	app.GET("/", handler.Hello)
 	// Template Test
-	app.GET("/hello", Hello)
+	app.GET("/hello", handler.Hello)
 
 	// Redirect to auth if query params exists
 	// app.GET("/", func(c echo.Context) error {
@@ -61,23 +60,4 @@ func main() {
 	serverAddress := fmt.Sprintf("127.0.0.1:%s", os.Getenv("APP_PORT"))
 	e.Logger.Fatal(e.Start(serverAddress))
 
-}
-
-func Hello(c echo.Context) error {
-	type myStruct1 struct {
-		Val1 string
-	}
-
-	type myStruct2 struct {
-		Val2 int
-	}
-
-	data1 := myStruct1{"Hello"}
-	data2 := myStruct2{42}
-
-	return c.Render(http.StatusOK, "hello.html", map[string]interface{}{
-		"data1": data1,
-		"data2": data2,
-		"world": "Hello!",
-	})
 }
