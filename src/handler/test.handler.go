@@ -3,12 +3,14 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	goshopify "github.com/nickfthedev/go-shopify/v3"
 	"github.com/nickfthedev/goshopifytest/src/utils"
 )
 
+// GET /graph
 func GraphQLTest(c echo.Context) error {
 	// Get Access Token
 	t, err := utils.GetAccessToken(c)
@@ -16,9 +18,9 @@ func GraphQLTest(c echo.Context) error {
 		fmt.Printf("Error: %s\n", err.Error())
 		return c.String(500, "Token Error")
 	}
-	fmt.Printf("Token: %s\n Shopname %s\n\n", t.Token, t.Shopname)
+	//fmt.Printf("Token: %s\n Shopname %s\n\n", t.Token, t.Shopname)
 	// Endpoint Test
-	client := goshopify.NewClient(utils.ShopifyApp, t.Shopname, t.Token)
+	client := goshopify.NewClient(utils.ShopifyApp, t.Shopname, t.Token, goshopify.WithVersion(os.Getenv("SHOPIFY_API_VERSION")))
 
 	req := `query {
 		products(first: 10, reverse: true) {
@@ -55,9 +57,31 @@ func GraphQLTest(c echo.Context) error {
 	// 	},
 	// }
 
-	var foo struct {
-		id string
+	type product struct {
+		ID          string `json:"id"`
+		Title       string `json:"title"`
+		Handle      string `json:"handle"`
+		Publication struct {
+			Name string `json:"name"`
+			ID   string `json:"id"`
+		} `json:"resourcePublicationOnCurrentPublication"`
+		PublishDate string `json:"publishDate"`
+		IsPublished bool   `json:"isPublished"`
 	}
+
+	type productEdge struct {
+		Node product `json:"node"`
+	}
+
+	type productConnection struct {
+		Edges []productEdge `json:"edges"`
+	}
+
+	type products struct {
+		Products productConnection `json:"products"`
+	}
+
+	var foo products
 
 	err = client.GraphQL.Query(req, nil, &foo)
 	if err != nil {
@@ -65,9 +89,12 @@ func GraphQLTest(c echo.Context) error {
 		return c.String(500, " Error")
 
 	}
+	fmt.Printf("%+v \n\n", foo)
+
 	return c.Render(http.StatusOK, "hello.html", map[string]interface{}{})
 }
 
+// GET /
 func Hello(c echo.Context) error {
 
 	// Get Access Token
