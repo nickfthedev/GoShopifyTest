@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -17,43 +16,50 @@ func GraphQLTest(c echo.Context) error {
 		fmt.Printf("Error: %s\n", err.Error())
 		return c.String(500, "Token Error")
 	}
-	fmt.Printf("Token: %s\n", t.Token)
+	fmt.Printf("Token: %s\n Shopname %s\n\n", t.Token, t.Shopname)
 	// Endpoint Test
 	client := goshopify.NewClient(utils.ShopifyApp, t.Shopname, t.Token)
 
-	req := `mutation webPixelCreate($webPixel: WebPixelInput!) {
-		webPixelCreate(webPixel: $webPixel) {
-			userErrors {
-				code
-				field
-				message
+	req := `query {
+		products(first: 10, reverse: true) {
+		  edges {
+			node {
+			  id
+			  title
+			  handle
+			  resourcePublicationOnCurrentPublication {
+				publication {
+				  name
+				  id
+				}
+				publishDate
+				isPublished
+			  }
 			}
-			webPixel {
-				settings
-				id
-			}
+		  }
 		}
-	}`
+	  }`
 
-	settings, err := json.Marshal(map[string]interface{}{
-		"accountID": fmt.Sprintf("%d", 12121324),
-	})
+	// settings, err := json.Marshal(map[string]interface{}{
+	// 	"accountID": fmt.Sprintf("%d", 12121324),
+	// })
 
-	if err != nil {
-		fmt.Printf("Error: %v\n", err.Error())
-		return c.String(500, " Error")
-	}
+	// if err != nil {
+	// 	fmt.Printf("Error: %v\n", err.Error())
+	// 	return c.String(500, " Error")
+	// }
 
-	variables := map[string]interface{}{
-		"webPixel": map[string]interface{}{
-			"settings": string(settings),
-		},
-	}
+	// variables := map[string]interface{}{
+	// 	"webPixel": map[string]interface{}{
+	// 		"settings": string(settings),
+	// 	},
+	// }
 
 	var foo struct {
+		id string
 	}
 
-	err = client.GraphQL.Query(req, &variables, &foo)
+	err = client.GraphQL.Query(req, nil, &foo)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err.Error())
 		return c.String(500, " Error")

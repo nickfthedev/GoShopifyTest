@@ -25,10 +25,7 @@ func main() {
 	// Templates
 	t := utils.InitTemplate([]string{"./views", "./build/views"})
 	utils.TData = utils.NewTemplateData()
-	// example data
-	utils.TData.AddTplData(map[string]interface{}{
-		"testkey": "testvalue",
-	})
+
 	// Connect Database
 	db.ConnectDB()
 	db.DB.AutoMigrate(&model.Shop{}, &model.Session{})
