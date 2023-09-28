@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/nickfthedev/goshopifytest/src/model"
+	"github.com/nickfthedev/goshopifytest/src/utils"
 	"github.com/nickfthedev/goshopifytest/src/utils/db"
 )
 
@@ -34,10 +35,15 @@ func CheckValidAuth(next echo.HandlerFunc) echo.HandlerFunc {
 			return c.String(http.StatusForbidden, "Invalid Cookie!")
 		}
 		session := new(model.Session)
-		db.DB.Where("access_token = ?", cookie.Value).First(&session)
+		db.DB.Where("access_token = ?", cookie.Value).Preload("Shop").First(&session)
 		if session.ID == 0 {
 			return c.String(http.StatusForbidden, "Session not found!")
 		}
+		shopName := session.Shop.Name
+		initials := strings.ToUpper(string(shopName[0])) + strings.ToUpper(string(shopName[1]))
+		utils.TData.AddTplData(map[string]interface{}{
+			"initials": initials,
+		})
 		return next(c)
 	}
 }

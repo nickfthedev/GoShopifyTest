@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	goshopify "github.com/bold-commerce/go-shopify/v3"
 	"github.com/labstack/echo/v4"
+	goshopify "github.com/nickfthedev/go-shopify/v3"
 	"github.com/nickfthedev/goshopifytest/src/model"
 	"github.com/nickfthedev/goshopifytest/src/utils"
 	"github.com/nickfthedev/goshopifytest/src/utils/db"

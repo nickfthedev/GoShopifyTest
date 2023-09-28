@@ -24,7 +24,11 @@ func main() {
 
 	// Templates
 	t := utils.InitTemplate([]string{"./views", "./build/views"})
-
+	utils.TData = utils.NewTemplateData()
+	// example data
+	utils.TData.AddTplData(map[string]interface{}{
+		"testkey": "testvalue",
+	})
 	// Connect Database
 	db.ConnectDB()
 	db.DB.AutoMigrate(&model.Shop{}, &model.Session{})
@@ -50,6 +54,7 @@ func main() {
 	app.GET("/", handler.Hello)
 	// Template Test
 	app.GET("/hello", handler.Hello)
+	app.GET("/graph", handler.GraphQLTest)
 
 	// Redirect to auth if query params exists
 	// app.GET("/", func(c echo.Context) error {
