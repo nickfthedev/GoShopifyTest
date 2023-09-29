@@ -3,24 +3,18 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
-	goshopify "github.com/nickfthedev/go-shopify/v3"
 	"github.com/nickfthedev/goshopifytest/src/utils"
 )
 
 // GET /graph
 func GraphQLTest(c echo.Context) error {
-	// Get Access Token
-	t, err := utils.GetAccessToken(c)
+	client, err := utils.GetClient(c)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err.Error())
 		return c.String(500, "Token Error")
 	}
-	//fmt.Printf("Token: %s\n Shopname %s\n\n", t.Token, t.Shopname)
-	// Endpoint Test
-	client := goshopify.NewClient(utils.ShopifyApp, t.Shopname, t.Token, goshopify.WithVersion(os.Getenv("SHOPIFY_API_VERSION")))
 
 	req := `query {
 		products(first: 10, reverse: true) {
@@ -96,16 +90,11 @@ func GraphQLTest(c echo.Context) error {
 
 // GET /
 func Hello(c echo.Context) error {
-
-	// Get Access Token
-	t, err := utils.GetAccessToken(c)
+	client, err := utils.GetClient(c)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err.Error())
 		return c.String(500, "Token Error")
 	}
-	fmt.Printf("Token: %s\n", t.Token)
-	// Endpoint Test
-	client := goshopify.NewClient(utils.ShopifyApp, t.Shopname, t.Token)
 
 	test, cErr := client.Product.List(nil)
 	if cErr != nil {

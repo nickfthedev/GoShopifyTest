@@ -12,6 +12,7 @@ import (
 )
 
 var ShopifyApp goshopify.App
+var ShopifyClient goshopify.Client
 
 func InitShopifyApp() {
 	// Create an app somewhere.
@@ -41,4 +42,18 @@ func GetAccessToken(c echo.Context) (*model.AccessToken, error) {
 	t.Token = encryptedToken
 	t.Shopname = session.Shop.Name
 	return t, nil
+}
+
+func GetClient(c echo.Context) (*goshopify.Client, error) {
+	// Get Access Token
+	t, err := GetAccessToken(c)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err.Error())
+		return nil, errors.New("Cannot obtain Accesstoken")
+	}
+	//fmt.Printf("Token: %s\n Shopname %s\n\n", t.Token, t.Shopname)
+	// Endpoint Test
+	client := goshopify.NewClient(ShopifyApp, t.Shopname, t.Token, goshopify.WithVersion(os.Getenv("SHOPIFY_API_VERSION")))
+	return client, nil
+
 }
