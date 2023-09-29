@@ -42,21 +42,18 @@ func main() {
 	e.Renderer = t
 	e.Use(middleware.CheckOAuthBegin)
 
+	//Group for authentificate the shopify app
 	auth := e.Group("/api/auth")
 	auth.GET("/tokens", handler.MyHandler)
 	auth.GET("/callback", handler.MyCallbackHandler)
 
+	// App routes
 	app := e.Group("")
 	app.Use(middleware.CheckValidAuth)
 	app.GET("/", handler.Hello)
 	// Template Test
 	app.GET("/hello", handler.Hello)
 	app.GET("/graph", handler.GraphQLTest)
-
-	// Redirect to auth if query params exists
-	// app.GET("/", func(c echo.Context) error {
-	// 	return c.String(http.StatusOK, "Hello, World!")
-	// })
 
 	// Start Server on 1323
 	serverAddress := fmt.Sprintf("127.0.0.1:%s", os.Getenv("APP_PORT"))
